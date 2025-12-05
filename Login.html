@@ -115,7 +115,7 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
         <div class="show-password" onclick="togglePassword()">Tampilkan Password</div>
-        <button class="btn btn-primary" onclick="login()">Login</button>
+        <button type="submit">Login</button>
     </form>
 
     <div class="links">
@@ -129,27 +129,23 @@
 
     form.addEventListener('submit', function(e){
         e.preventDefault(); // jangan reload page
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
 
-        if(email && password){
-            alert('Selamat datang, ' + email + '!');
-            form.reset();
-        } else {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if(email === "" || password === ""){
             alert('Mohon isi email dan password.');
+            return;
         }
-    });
 
+        // LOGIN BERHASIL → masuk ke home
+        alert('Selamat datang, ' + email + '!');
+        window.location.href = "home.html";
+    });
+    
     function togglePassword(){
         const passInput = document.getElementById('password');
-        if(passInput.type === "password"){
-            passInput.type = "text";
-        } else {
-            passInput.type = "password";
-        }
-    }
-    function login(){
-      window.location.href="home.html";
+        passInput.type = passInput.type === "password" ? "text" : "password";
     }
 </script>
 
