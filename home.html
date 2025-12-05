@@ -115,13 +115,139 @@ main {
 .post-type input[type="radio"] { margin-right: 5px; accent-color: var(--pink-main); }
 
 /* RIGHT BOXES */
-.report-box { background: var(--white); padding: 15px; border-radius: 14px; margin-bottom: 20px; }
-.right .people .person { padding: 8px; background: var(--white); border-radius: 10px; margin: 6px 0; }
+.report-box {
+    background-color: #f9f9f9;      /* Warna lembut */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sedikit shadow */
+    text-align: center;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.report-box p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.report-btn {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #ff4fa3;      /* Warna tombol */
+    color: white;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.report-btn:hover {
+    background-color: #ff81be;
+    transform: translateY(-2px);    /* Efek naik sedikit saat hover */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
 
 /* RESPONSIVE */
 @media(max-width: 900px) {
     .container { flex-direction: column; }
     .left, .right, main { width: 100%; height: auto; overflow: visible; }
+}
+.around-box {
+    margin-top: 20px;
+    padding: 0 8px;
+}
+
+.around-box h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.person-card {
+    display: flex;            /* Membuat avatar dan info sejajar horizontal */
+    align-items: center;      /* Vertikal center */
+    gap: 10px;                /* Jarak antara avatar dan info */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.person-avatar {
+    width: 50px;             /* Ukuran avatar */
+    height: 50px;
+    border-radius: 50%;      /* Biar bulat */
+    object-fit: cover;       /* Biar gambar tidak terdistorsi */
+}
+
+.person-info {
+    display: flex;
+    flex-direction: column;  /* Nama di atas, jurusan di bawah */
+}
+.notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+.notif-dropdown {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    width: 220px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none; /* awalnya hidden */
+    flex-direction: column;
+    z-index: 100;
+}
+
+.notif-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item:hover {
+    background-color: #ffe7f1;
+}
+
+.chat-icon, .notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.chat-badge, .notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
 }
 
 </style>
@@ -134,8 +260,24 @@ main {
     <input type="text" placeholder="Cari informasi...">
     <div class="nav-icons" id="navMenu">
     <span id="homeBtn"><i class="fa-solid fa-house"></i></span>
-    <span id="chatBtn"><i class="fa-regular fa-comment"></i></span>
+    <span id="chatBtn" class="chat-icon">
+        <i class="fa-regular fa-comment"></i>
+        <span class="chat-badge" id="chatBadge">2</span>
+    </span>
+    
+    <span id="notifBtn" class="notif-icon">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-badge" id="notifBadge">5</span>
+    </span>
+
+    <!-- Dropdown Notifikasi -->
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-item">Pesan dari Dinda</div>
+        <div class="notif-item">Pesan dari Kaila</div>
+        <div class="notif-item">Barang hilang dilaporkan</div>
+    </div>
 </div>
+
 
 </nav>
 
@@ -213,7 +355,8 @@ main {
             <img src="https://asset.kompas.com/crops/QzJOsa5TyrB9a8bKdw6TM0L0_lg=/66x133:1222x903/1200x800/data/photo/2024/08/29/66cf807079031.jpeg" class="post-img">
             
             <i class="fa-regular fa-heart" onclick="likePost(this)"></i>
-            <i class="fa-regular fa-comment" onclick="openChat()"></i>
+            <i class="fa-regular fa-comment" onclick="openChat(this)"></i>
+
             </div>
 
         <div class="post-card" data-type="penemuan">
@@ -227,7 +370,8 @@ main {
             <p><b>Penemuan Dompet</b><br>Tempat Ditemukan: Perpustakaan<br>Tanggal: 02-12-2025</p>
             <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//104/MTA-74943607/no-brand_dompet-wanita-import-cat-style-cewe-cewek-ddwsc_full01.jpg" class = "post-img">
             <i class="fa-regular fa-heart" onclick="likePost(this)"></i>
-            <i class="fa-regular fa-comment" onclick="openChat()"></i>
+            <i class="fa-regular fa-comment" onclick="openChat(this)"></i>
+
         </div>
 
     </main>
@@ -235,15 +379,40 @@ main {
     <!-- RIGHT -->
     <aside class="right">
         <div class="report-box">
-            <p>Laporkan pada kami apabila anda menemukan postingan yang tidak pantas.</p>
-            <button>Ajukan Laporan</button>
+    <p>Laporkan pada kami apabila anda menemukan postingan yang tidak pantas.</p>
+    <a href="ajukanLaporan.html" class="report-btn">Ajukan Laporan</a>
+</div>
+
+    
+    <div class="around-box">
+    <h3>Orang-orang sekitar anda:</h3>
+
+    <div class="person-card">
+        <img src="profil.png" alt="Kaila" class="person-avatar">
+        <div class="person-info">
+            <span class="person-name">Kaila Maharani</span>
+            <span class="person-major">Informatika</span>
         </div>
-        <h4>Orang-orang sekitar anda:</h4>
-        <div class="people">
-            <div class="person">Kaila Maharani – Informatika</div>
-            <div class="person">Dinda Putri – Informatika</div>
-            <div class="person">Karen Aulia – Arsitektur</div>
+    </div>
+
+    <div class="person-card">
+        <img src="profil.png" alt="Dinda" class="person-avatar">
+        <div class="person-info">
+            <span class="person-name">Dinda Putri</span>
+            <span class="person-major">Informatika</span>
         </div>
+    </div>
+
+    <div class="person-card">
+        <img src="profil.png" alt="Karen" class="person-avatar">
+        <div class="person-info">
+            <span class="person-name">Karen Aulia</span>
+            <span class="person-major">Arsitektur</span>
+        </div>
+    </div>
+</div>
+
+
     </aside>
 
 </div>
@@ -260,9 +429,48 @@ document.getElementById("homeBtn")?.addEventListener("click", () => {
 
 document.getElementById("chatBtn")?.addEventListener("click", () => {
     console.log("Chat clicked");
-    window.location.href = "chat-list.html";
+    window.location.href = "chat.html";
 });
 
+const notifBtn = document.getElementById("notifBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+const notifBadge = document.getElementById("notifBadge");
+
+notifBtn.addEventListener("click", () => {
+    // Toggle dropdown
+    if(notifDropdown.style.display === "flex") {
+        notifDropdown.style.display = "none";
+    } else {
+        notifDropdown.style.display = "flex";
+        notifDropdown.style.flexDirection = "column";
+        // jangan hapus badge di sini
+    }
+});
+const chatBtn = document.getElementById("chatBtn");
+const chatBadge = document.getElementById("chatBadge");
+
+chatBtn.addEventListener("click", () => {
+    alert("Anda membuka chat!");
+    // Contoh: reset badge saat dibuka
+    chatBadge.textContent = "";
+});
+
+
+// Klik di luar dropdown -> tutup
+document.addEventListener("click", (e) => {
+    if(!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+        notifDropdown.style.display = "none";
+    }
+});
+
+// Contoh: hapus badge saat klik item
+document.querySelectorAll(".notif-item").forEach(item => {
+    item.addEventListener("click", () => {
+        // Hapus badge ketika notifikasi dibaca
+        notifBadge.textContent = "";
+        // Bisa tambahkan aksi lain misal buka detail
+    });
+});
 
 // TABS
 const tabs = document.querySelectorAll("#tabsMenu div");
@@ -324,8 +532,8 @@ function submitPost(){
         <div class="post-header">
             <img src="profil.png" class="mini-profile">
             <div>
-                <b>Arindra Cetta</b><br>
-                <small>Sistem Informasi • ${type.charAt(0).toUpperCase()+type.slice(1)}</small>
+                <b>Adinda Wakhidatul Mar'ah</b><br>
+                <small>Informatika • ${type.charAt(0).toUpperCase()+type.slice(1)}</small>
             </div>
         </div>
         <p>${text}</p>
@@ -347,7 +555,8 @@ function submitPost(){
     icons.className="post-icons";
     icons.innerHTML = `
         <i class="fa-regular fa-heart" onclick="likePost(this)"></i>
-            <i class="fa-regular fa-comment" onclick="openChat()"></i>
+        <i class="fa-regular fa-comment" onclick="openChat(this)"></i>
+
     `;
     card.appendChild(icons);
 
@@ -398,8 +607,14 @@ function likePost(icon) {
     icon.style.color = icon.classList.contains("fa-solid") ? "#ff4fa3" : "#000";
 }
 
-function openChat() {
-    window.location.href = "chat.html";  // pindah ke halaman chat
+function openChat(btn) {
+
+    const card = btn.closest(".post-card");
+    const userName = card.querySelector(".post-header b")?.innerText || "User";
+    const fotoElement = card.querySelector(".post-header img");
+    const fotoUser = fotoElement ? fotoElement.src : "img/default-profile.png";
+    const url = `room-chat.html?user=${encodeURIComponent(userName)}&img=${encodeURIComponent(fotoUser)}`;
+    window.location.href = url;
 }
 
 document.addEventListener("click", function(e) {

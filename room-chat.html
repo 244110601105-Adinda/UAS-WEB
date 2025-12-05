@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Chat</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<style>
+    :root {
+    --pink-main: #ff4fa3;
+    --pink-light: #ffe7f1;
+    --gray-bg: #fafafa;
+    --white: #fff;
+    --text: #333;
+}
+
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: #f8f8f8;
+    }
+    .navbar {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    background: var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.logo { font-size: 25px; font-weight: bold; color: var(--pink-main); }
+.logo span { color: #f7cfe5; }
+.nav-icons { margin-left: auto; display: flex; gap: 25px; font-size: 21px; cursor: pointer; }
+.nav-icons span.active { color: var(--pink-main); font-weight: bold; }
+.navbar input { margin-left: 25px; width: 360px; padding: 10px 18px; border-radius: 20px; border: 1px solid #ddd; }
+
+    /* ===== HEADER ===== */
+    .chat-header {
+        padding: 12px 18px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #ececec;
+    }
+
+    .chat-header img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ff4fa3;
+    }
+
+    .chat-header .name {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    /* ===== AREA CHAT ===== */
+    .chat-area {
+        height: calc(100vh - 120px);
+        overflow-y: auto;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .bubble-left {
+        max-width: 60%;
+        background: #ffffff;
+        padding: 12px 18px;
+        border-radius: 14px;
+        color: #333;
+        border: 1px solid #e5e5e5;
+    }
+
+    .bubble-right {
+        max-width: 60%;
+        background: #ff4fa3;
+        padding: 12px 18px;
+        border-radius: 14px;
+        color: white;
+        margin-left: auto;
+    }
+
+    /* ===== INPUT AREA ===== */
+    .input-area {
+        padding: 15px 20px;
+        background: #ffffff;
+        border-top: 1px solid #ececec;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .input-area input {
+        flex: 1;
+        padding: 15px 18px;
+        border-radius: 40px;
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .send-btn {
+        background: #ff4fa3;
+        padding: 12px 25px;
+        border-radius: 14px;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        border: none;
+        font-size: 14px;
+    }
+
+    .send-btn:hover {
+        opacity: 0.9;
+    }
+    .notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+.notif-dropdown {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    width: 220px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none; /* awalnya hidden */
+    flex-direction: column;
+    z-index: 100;
+}
+
+.notif-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item:hover {
+    background-color: #ffe7f1;
+}
+.chat-icon, .notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.chat-badge, .notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+</style>
+
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Find<span>Me</span></div>
+    <input type="text" placeholder="Cari informasi...">
+    <div class="nav-icons" id="navMenu">
+    <span id="homeBtn"><i class="fa-solid fa-house"></i></span>
+    <span id="chatBtn" class="chat-icon">
+        <i class="fa-regular fa-comment"></i>
+        <span class="chat-badge" id="chatBadge">2</span>
+    </span>
+    
+    <span id="notifBtn" class="notif-icon">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-badge" id="notifBadge">5</span>
+    </span>
+
+    <!-- Dropdown Notifikasi -->
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-item">Pesan dari Dinda</div>
+        <div class="notif-item">Pesan dari Kaila</div>
+        <div class="notif-item">Barang hilang dilaporkan</div>
+    </div>
+</div>
+
+
+</nav>
+<!-- HEADER -->
+<div class="chat-header">
+    <img id="chatPhoto" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="">
+    <div class="name" id="chatName">Username</div>
+</div>
+
+<!-- AREA CHAT -->
+<div class="chat-area" id="chatBox">
+    <div class="bubble-left">Halo kak, saya mau info soal barang hilang...</div>
+    <div class="bubble-right">Baik kak, terima kasih ya 🙏</div>
+</div>
+
+<!-- INPUT AREA -->
+<div class="input-area">
+    <input type="text" id="chatInput" placeholder="Tulis pesan...">
+    <button class="send-btn" onclick="sendMessage()">Kirim</button>
+</div>
+
+<script>
+// NAVBAR
+document.querySelectorAll("#navMenu span").forEach(item=>{
+    
+});
+document.getElementById("homeBtn")?.addEventListener("click", () => {
+    console.log("Home clicked");
+    window.location.href = "home.html";
+});
+
+document.getElementById("chatBtn")?.addEventListener("click", () => {
+    console.log("Chat clicked");
+    window.location.href = "chat.html";
+});
+
+const notifBtn = document.getElementById("notifBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+const notifBadge = document.getElementById("notifBadge");
+
+notifBtn.addEventListener("click", () => {
+    // Toggle dropdown
+    if(notifDropdown.style.display === "flex") {
+        notifDropdown.style.display = "none";
+    } else {
+        notifDropdown.style.display = "flex";
+        notifDropdown.style.flexDirection = "column";
+        // jangan hapus badge di sini
+    }
+});
+const chatBtn = document.getElementById("chatBtn");
+const chatBadge = document.getElementById("chatBadge");
+
+chatBtn.addEventListener("click", () => {
+    alert("Anda membuka chat!");
+    // Contoh: reset badge saat dibuka
+    chatBadge.textContent = "";
+});
+
+// Ambil nama dari URL
+const params = new URLSearchParams(window.location.search);
+const name = params.get("user");
+const photo = params.get("img");
+
+// Update nama
+if (name) {
+    document.getElementById("chatName").textContent = name;
+}
+
+// Update foto profil
+if (photo) {
+    document.getElementById("chatPhoto").src = photo;
+}
+
+// Kirim pesan
+function sendMessage() {
+    const box = document.getElementById("chatBox");
+    const input = document.getElementById("chatInput");
+
+    if (input.value.trim() === "") return;
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble-right";
+    bubble.textContent = input.value;
+
+    box.appendChild(bubble);
+    box.scrollTop = box.scrollHeight;
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
