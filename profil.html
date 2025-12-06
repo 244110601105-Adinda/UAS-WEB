@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profil</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+    --pink-main: #ff4fa3;
+    --pink-light: #ffe6f3;
+    --gray-bg: #f7f7fa;
+    --white: #fff;
+    --text-dark: #333;
+}
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #ffe6f3;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    background: var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.logo { font-size: 25px; font-weight: bold; color: var(--pink-main); }
+.logo span { color: #f7cfe5; }
+.nav-icons { margin-left: auto; display: flex; gap: 25px; font-size: 21px; cursor: pointer; }
+.nav-icons span.active { color: var(--pink-main); font-weight: bold; }
+.navbar input { margin-left: 25px; width: 360px; padding: 10px 18px; border-radius: 20px; border: 1px solid #ddd; }
+
+/* CARD BESAR */
+.profile-wrapper {
+    width: 90%;
+    margin: 80px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+}
+
+/* JUDUL */
+.profile-wrapper h2 {
+    margin: 0 0 25px 0;
+    font-weight: 600;
+    font-size: 24px;
+    color: #ff4fa3;
+}
+
+/* GRID 2 KOLOM */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px 40px;
+    align-items: start;
+}
+
+/* FOTO PROFIL */
+.profile-photo {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    justify-self: center;
+    text-align: center;
+}
+
+.profile-photo img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.profile-photo button {
+    margin-top: 10px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    background: #eaeaea;
+    border: none;
+    cursor: pointer;
+}
+
+/* FORM GROUP */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.form-group input:focus {
+    border-color: #ff4fa3;
+    outline: none;
+}
+
+/* BUTTON SIMPAN */
+.btn-save {
+    margin-top: 35px;
+    padding: 12px 28px;
+    background: #ff4fa3;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-save:hover {
+    background: #f771b2;
+}
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+.notif-dropdown {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    width: 220px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none; /* awalnya hidden */
+    flex-direction: column;
+    z-index: 100;
+}
+
+.notif-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item:hover {
+    background-color: #ffe7f1;
+}
+.chat-icon, .notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.chat-badge, .notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ff4fa3;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Find<span>Me</span></div>
+    <input type="text" placeholder="Cari informasi...">
+    <div class="nav-icons" id="navMenu">
+    <span id="homeBtn"><i class="fa-solid fa-house"></i></span>
+    <span id="chatBtn" class="chat-icon">
+        <i class="fa-regular fa-comment"></i>
+        <span class="chat-badge" id="chatBadge">2</span>
+    </span>
+    
+    <span id="notifBtn" class="notif-icon">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-badge" id="notifBadge">5</span>
+    </span>
+
+    <!-- Dropdown Notifikasi -->
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-item">Pesan dari Dinda</div>
+        <div class="notif-item">Pesan dari Kaila</div>
+        <div class="notif-item">Barang hilang dilaporkan</div>
+    </div>
+    <div class="nav-icons" id="navMenu">
+    <span id="profileBtn"><i class="fa-solid fa-user"></i></span>
+</div>
+
+
+</nav>
+<div class="profile-wrapper">
+    <h2>Edit Profil</h2>
+
+    <div class="form-grid">
+
+        <!-- FOTO PROFIL -->
+        <div class="profile-photo">
+            <img id="photoPreview" src="profil.png">
+            <br>
+            <input type="file" id="photoInput" style="display:none" accept="image/*">
+            <button onclick="document.getElementById('photoInput').click()">Ganti Foto</button>
+        </div>
+
+        <!-- FORM KIRI -->
+        <div class="form-group">
+            <label>Nama</label>
+            <input id="nama">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input id="email">
+        </div>
+
+        <div class="form-group">
+            <label>Jenis Kelamin</label>
+            <input id="gender">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password">
+        </div>
+
+        <!-- FORM KANAN -->
+        <div class="form-group">
+            <label>Prodi</label>
+            <input id="prodi">
+        </div>
+
+        <div class="form-group">
+            <label>NIM</label>
+            <input id="nim">
+        </div>
+
+        <div class="form-group">
+            <label>Kontak</label>
+            <input id="kontak">
+        </div>
+
+    </div>
+
+    <button class="btn-save" onclick="saveProfile()">SIMPAN</button>
+</div>
+
+<script>
+    // NAVBAR
+document.querySelectorAll("#navMenu span").forEach(item=>{
+    
+});
+document.getElementById("homeBtn")?.addEventListener("click", () => {
+    console.log("Home clicked");
+    window.location.href = "home.html";
+});
+
+document.getElementById("chatBtn")?.addEventListener("click", () => {
+    console.log("Chat clicked");
+    window.location.href = "chat.html";
+});
+
+const notifBtn = document.getElementById("notifBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+const notifBadge = document.getElementById("notifBadge");
+
+notifBtn.addEventListener("click", () => {
+    // Toggle dropdown
+    if(notifDropdown.style.display === "flex") {
+        notifDropdown.style.display = "none";
+    } else {
+        notifDropdown.style.display = "flex";
+        notifDropdown.style.flexDirection = "column";
+        // jangan hapus badge di sini
+    }
+});
+const chatBtn = document.getElementById("chatBtn");
+const chatBadge = document.getElementById("chatBadge");
+
+chatBtn.addEventListener("click", () => {
+    alert("Anda membuka chat!");
+    // Contoh: reset badge saat dibuka
+    chatBadge.textContent = "";
+});
+document.getElementById("profileBtn").addEventListener("click", function () {
+    window.location.href = "profil.html"; 
+});
+
+const fields = ["nama","email","gender","password","prodi","nim","kontak"];
+
+/* LOAD DATA */
+function loadProfile(){
+    fields.forEach(f => {
+        const saved = localStorage.getItem(f);
+        document.getElementById(f).value = saved || "";
+    });
+
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+        document.getElementById("photoPreview").src = savedPhoto;
+    }
+}
+
+/* SAVE DATA */
+function saveProfile(){
+    fields.forEach(f => {
+        const val = document.getElementById(f).value;
+        localStorage.setItem(f, val);
+    });
+    alert("Profil berhasil disimpan!");
+}
+
+/* UPLOAD FOTO */
+document.getElementById("photoInput").addEventListener("change", function(e){
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(ev){
+        document.getElementById("photoPreview").src = ev.target.result;
+        localStorage.setItem("profilePhoto", ev.target.result);
+    };
+    reader.readAsDataURL(file);
+});
+
+loadProfile();
+</script>
+
+</body>
+</html>

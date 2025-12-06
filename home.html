@@ -105,10 +105,87 @@ main {
 .tabs div { padding-bottom: 5px; cursor: pointer; }
 .tabs .active { border-bottom: 3px solid var(--pink-main); color: var(--pink-main); }
 
-/* CARD POST */
-.post-card { background: var(--white); padding: 20px; border-radius: 14px; margin-bottom: 20px; }
-.post-header { display: flex; gap: 10px; align-items: center; }
 .post-img { width: 150px; height: auto; border-radius: 10px; margin-top: 10px; display: block; }
+/* Container post */
+.post-container {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* Header: foto + nama kiri, titik tiga kanan */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Avatar + teks */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mini-profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Wrapper titik tiga + menu */
+.menu-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.menu-icon {
+    font-size: 22px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.15s ease;
+    position: absolute;
+    right: 0;
+    top: 26px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    width: 140px;
+    z-index: 20;
+}
+.dropdown-menu.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: #f2f2f2;
+}
+
+/* Isi postingan */
+.post-content {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.4;
+}
 
 /* RADIO POST TYPE */
 .post-type { margin: 10px 0; display: flex; gap: 20px; font-weight: bold; color: var(--text-dark); }
@@ -299,7 +376,10 @@ main {
         <div class="notif-item">Pesan dari Kaila</div>
         <div class="notif-item">Barang hilang dilaporkan</div>
     </div>
+    <div class="nav-icons" id="navMenu">
+    <span id="profileBtn"><i class="fa-solid fa-user"></i></span>
 </div>
+
 
 
 </nav>
@@ -366,15 +446,26 @@ main {
             <div data-tab="penemuan">Penemuan</div>
         </div>
 
-        <!-- CARD POSTS -->
-        <div class="post-card" data-type="kehilangan">
-            <div class="post-header">
-                <img src="profil2.png" class="mini-profile">
-                <div>
-                    <b>Rafi Nugraha</b><br>
-                    <small>Ilmu Lingkungan • Kehilangan</small>
-                </div>
+        <div class="post-container">
+    <div class="post-header">
+        <div class="user-info">
+            <img src="profil2.png" class="mini-profile">
+            <div class="user-text">
+                <b>Rafi Nugraha</b><br>
+                <small>Ilmu Lingkungan • Kehilangan</small>
             </div>
+        </div>
+
+        <div class="menu-wrapper">
+            <span class="menu-icon" onclick="toggleMenu(this)">⋮</span>
+            <div class="dropdown-menu">
+                <div class="dropdown-item">Edit</div>
+                <div class="dropdown-item">Hapus</div>
+                <div class="dropdown-item">Tandai Selesai</div>
+            </div>
+        </div>
+    </div>
+        <div class="post-content">
             <p><b>Kehilangan STNK Motor</b><br>Tempat Hilang: Gedung S lantai 3<br>Tanggal Hilang: 05-12-2025</p>
             <img src="https://asset.kompas.com/crops/QzJOsa5TyrB9a8bKdw6TM0L0_lg=/66x133:1222x903/1200x800/data/photo/2024/08/29/66cf807079031.jpeg" class="post-img">
             
@@ -382,22 +473,35 @@ main {
             <i class="fa-regular fa-comment" onclick="openChat(this)"></i>
 
             </div>
-
-        <div class="post-card" data-type="penemuan">
-            <div class="post-header">
-                <img src="profil.png" class="mini-profile">
-                <div>
-                    <b>Sabrina Rahma</b><br>
-                    <small>Informatika • Penemuan</small>
-                </div>
             </div>
+
+        <div class="post-container">
+    <div class="post-header">
+        <div class="user-info">
+            <img src="profil2.png" class="mini-profile">
+            <div class="user-text">
+                <b>Rafi Nugraha</b><br>
+                <small>Ilmu Lingkungan • Kehilangan</small>
+            </div>
+        </div>
+
+        <div class="menu-wrapper">
+            <span class="menu-icon" onclick="toggleMenu(this)">⋮</span>
+            <div class="dropdown-menu">
+                <div class="dropdown-item">Edit</div>
+                <div class="dropdown-item">Hapus</div>
+                <div class="dropdown-item">Tandai Selesai</div>
+            </div>
+        </div>
+    </div>
+            <div class="post-content">
             <p><b>Penemuan Dompet</b><br>Tempat Ditemukan: Perpustakaan<br>Tanggal: 02-12-2025</p>
             <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//104/MTA-74943607/no-brand_dompet-wanita-import-cat-style-cewe-cewek-ddwsc_full01.jpg" class = "post-img">
             <i class="fa-regular fa-heart" onclick="likePost(this)"></i>
             <i class="fa-regular fa-comment" onclick="openChat(this)"></i>
 
         </div>
-
+        </div>
     </main>
 
     <!-- RIGHT -->
@@ -494,6 +598,9 @@ document.querySelectorAll(".notif-item").forEach(item => {
         notifBadge.textContent = "";
         // Bisa tambahkan aksi lain misal buka detail
     });
+});
+document.getElementById("profileBtn").addEventListener("click", function () {
+    window.location.href = "profil.html"; 
 });
 
 // TABS
@@ -633,7 +740,7 @@ function likePost(icon) {
 
 function openChat(btn) {
 
-    const card = btn.closest(".post-card");
+    const card = btn.closest(".post-container");
     const userName = card.querySelector(".post-header b")?.innerText || "User";
     const fotoElement = card.querySelector(".post-header img");
     const fotoUser = fotoElement ? fotoElement.src : "img/default-profile.png";
@@ -664,8 +771,22 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
         window.location.href = "index.html";
     }
 });
+document.querySelectorAll(".menu-icon").forEach(icon => {
+    icon.addEventListener("click", function(e) {
+        e.stopPropagation();
 
+        const menu = this.nextElementSibling;
+        menu.classList.toggle("show");
 
+        // Tutup kalau klik di luar
+        document.addEventListener("click", function close(event) {
+            if (!icon.parentElement.contains(event.target)) {
+                menu.classList.remove("show");
+                document.removeEventListener("click", close);
+            }
+        });
+    });
+});
 
 </script>
 </body>

@@ -6,7 +6,6 @@
 <title>Room Chat</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
 <style>
     :root {
     --pink-main: #ff4fa3;
@@ -209,9 +208,10 @@
         <div class="notif-item">Pesan dari Kaila</div>
         <div class="notif-item">Barang hilang dilaporkan</div>
     </div>
-</div>
-
-
+    <span id="profileBtn" class="profile-icon">
+            <i class="fa-solid fa-user"></i>
+        </span>
+        </div>
 </nav>
 <!-- HEADER -->
 <div class="chat-header">
@@ -268,7 +268,9 @@ chatBtn.addEventListener("click", () => {
     // Contoh: reset badge saat dibuka
     chatBadge.textContent = "";
 });
-
+document.getElementById("profileBtn").addEventListener("click", function () {
+    window.location.href = "profil.html"; 
+});
 // Ambil nama dari URL
 const params = new URLSearchParams(window.location.search);
 const name = params.get("user");

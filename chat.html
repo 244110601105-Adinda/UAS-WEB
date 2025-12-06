@@ -267,6 +267,9 @@ body {
         <div class="notif-item">Pesan dari Kaila</div>
         <div class="notif-item">Barang hilang dilaporkan</div>
     </div>
+    <span id="profileBtn" class="profile-icon">
+            <i class="fa-solid fa-user"></i>
+        </span>
 </div>
 
 
@@ -354,7 +357,9 @@ chatBtn.addEventListener("click", () => {
     // Contoh: reset badge saat dibuka
     chatBadge.textContent = "";
 });
-
+document.getElementById("profileBtn").addEventListener("click", function () {
+    window.location.href = "profil.html"; 
+});
 /* GET QUERY PARAMS */
 function params() {
     const url = new URL(window.location.href);
